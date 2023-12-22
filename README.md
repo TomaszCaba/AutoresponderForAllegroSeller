@@ -22,4 +22,4 @@ Now your autoresponder should work and if it doesn't, [report issue](https://git
 
 
 > [!TIP]
-> You can change `AUTORESPONSE` variable in `main.py` to personalize auto response text.
+> You can change `AUTORESPONSE` variable in `main.py` to customize auto response text.
