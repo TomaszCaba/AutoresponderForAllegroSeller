@@ -48,7 +48,7 @@ def get_access_token():
                                   f"&redirect_uri={REDIRECT_URI}&code_challenge_method=S256"
                                   f"&code_challenge={code_challenge}")
     print("Zaloguj do Allegro - skorzystaj z url w swojej "
-          "przeglądarce oraz wprowadź authorization code ze zwróconego url: ")
+          "przeglądarce oraz wprowadź kod autoryzacyjny ze zwróconego url: ")
     print(f"--- {authorization_redirect_url} ---")
     authorization_code = input("Podaj kod: ")
     try:
