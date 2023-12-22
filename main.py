@@ -24,7 +24,6 @@ def get_threads(token):
         url = "https://api.allegro.pl.allegrosandbox.pl/messaging/threads"
         headers = {'Authorization': 'Bearer ' + token, 'Accept': "application/vnd.allegro.public.v1+json"}
         threads = requests.get(url, headers=headers, verify=False)
-        print(threads.json())
         return threads
     except requests.exceptions.HTTPError as err:
         raise SystemExit(err)
@@ -77,7 +76,6 @@ def get_next_token(token):
 
 def save_token_to_file(token):
     with open("token.json", "w") as token_response_w:
-        print(datetime.now())
         token['generated_on'] = str(datetime.now())
         token_response_w.write(json.dumps(token, indent=4))
 
@@ -85,7 +83,6 @@ def save_token_to_file(token):
 def main():
     with open("token.json", "r") as token_response:
         lines = token_response.readlines()
-        print(f"lynie = {lines}")
         if not lines:
             response = get_access_token()
             access_token = response['access_token']
@@ -96,14 +93,8 @@ def main():
             new_token = get_next_token(refresh_token)
             save_token_to_file(new_token)
             access_token = new_token['access_token']
-    print(f"access token = {access_token}")
-    threads = get_threads(access_token).json()['threads']
-    print(get_all_messages(access_token, threads[0]['id'])['messages'])
-    print(threads)
-    # mark_as_unread(access_token, threads[0]["id"])
     threads = get_threads(access_token).json()['threads']
     for thread in threads:
-        print(type(thread['read']))
         if not thread['read']:
             if was_last_message_created_in_24h(access_token, thread['id']):
                 if get_all_messages(access_token, thread['id'])['messages'][0]['author']['isInterlocutor']:
@@ -136,7 +127,6 @@ def mark_as_unread(token, thread_id):
         url = f"https://api.allegro.pl.allegrosandbox.pl/messaging/threads/{thread_id}/read"
         headers = {'Authorization': 'Bearer ' + token, 'Accept': "application/vnd.allegro.public.v1+json"}
         response = requests.put(url, headers=headers, data=json.dumps({"read": False}), verify=False)
-        print(response)
     except requests.exceptions.HTTPError as err:
         raise SystemExit(err)
 
@@ -146,7 +136,6 @@ def mark_as_read(token, thread_id):
         url = f"https://api.allegro.pl.allegrosandbox.pl/messaging/threads/{thread_id}/read"
         headers = {'Authorization': 'Bearer ' + token, 'Accept': "application/vnd.allegro.public.v1+json"}
         response = requests.put(url, headers=headers, data=json.dumps({"read": True}), verify=False)
-        print(response)
     except requests.exceptions.HTTPError as err:
         raise SystemExit(err)
 
@@ -156,7 +145,6 @@ def get_all_messages(token, thread_id):
         url = f"https://api.allegro.pl.allegrosandbox.pl/messaging/threads/{thread_id}/messages"
         headers = {'Authorization': 'Bearer ' + token, 'Accept': "application/vnd.allegro.public.v1+json"}
         response = requests.get(url, headers=headers, verify=False)
-        print(response)
         return response.json()
     except requests.exceptions.HTTPError as err:
         raise SystemExit(err)
