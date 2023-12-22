@@ -151,7 +151,7 @@ def get_all_messages(token, thread_id):
 
 
 def was_last_message_created_in_24h(token, thread_id):
-    last_message = get_all_messages(token, thread_id)['messages'][0]['createdAt']
+    last_message = get_all_messages(token, thread_id)['messages'][1]['createdAt']
     last_message_time = datetime.strptime(last_message, "%Y-%m-%dT%H:%M:%S.%fZ")
     time_from_last_message = datetime.now() - last_message_time
     if time_from_last_message > timedelta(hours=24):
